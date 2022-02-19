@@ -25,4 +25,15 @@ jobs:
       run: dotnet test --no-build --verbosity normal
     - name: Publish
       run: dotnet publish BlazorPages.csproj --configuration Release
-      
+    
+    - name: GitHub Pages action
+      if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on master
+      uses: peaceiris/actions-gh-pages@v3.6.1
+      with:
+          github_token: ${{ secrets.PUBLISH_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: bin/Release/net6.0/publish/wwwroot
+          allow_empty_commit: false
+          keep_files: false
+          force_orphan: true
+    
